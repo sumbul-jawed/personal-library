@@ -1,1 +1,31 @@
+[
+  {
+    "title": "Python Crash Course",
+    "author": "Eric Matthes",
+    "genre": "Programming",
+    "read_status": false,
+    "added_date": "2025-03-11 14:40:45"
+  },
+  {
+    "title": "The Art of Thinking Clearly",
+    "author": "Rolf Dobelli",
+    "genre": "Self-help",
+    "read_status": true,
+    "added_date": "2025-03-12 10:22:30"
+  },
+  {
+    "title": "Atomic Habits",
+    "author": "James Clear",
+    "genre": "Productivity",
+    "read_status": false,
+    "added_date": "2025-03-13 08:15:12"
+  },
+  {
+    "title": "Deep Learning with Python",
+    "author": "François Chollet",
+    "genre": "Machine Learning",
+    "read_status": true,
+    "added_date": "2025-03-14 18:05:50"
+  }
+]
 
