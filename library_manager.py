@@ -344,7 +344,6 @@ elif st.session_state.current_view == "library":
                     if st.button("Remove", key=f"remove_{i}", use_container_width=True):
                         if remove_book(i):
                             st.session_state.book_removed = True
-                            st.experimental_rerun()
 
                 with col2:
                     new_status = not book['read_status']
@@ -352,7 +351,6 @@ elif st.session_state.current_view == "library":
                     if st.button(status_label, key=f"status_{i}", use_container_width=True):
                         st.session_state.library[i]['read_status'] = new_status
                         save_library()
-                        st.experimental_rerun()
 
     if st.session_state.book_removed:
         st.markdown("<div class='success-message'>Book removed successfully!</div>", unsafe_allow_html=True)
