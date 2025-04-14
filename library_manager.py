@@ -1,4 +1,3 @@
-
 import streamlit as st
 import pandas as pd 
 import json 
@@ -56,7 +55,7 @@ st.markdown("""
     border-left: 5px solid #3B82F6;
     transition: transform 0.3s ease;
 }
-.book-card-hover {
+.book-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
 }
@@ -267,61 +266,62 @@ def create_visualizations(stats):
 load_library()
 
 # Sidebar
-st.sidebar.markdown("<h1 style='text-align: center;'> Navigation</h1>", unsafe_allow_html=True)
-lottie_book = load_lottieurl("https://assets9.lottieflies.com/temp/1f20_aKAfIn.json")
+st.sidebar.markdown("<h1 style='text-align: center;'>Navigation</h1>", unsafe_allow_html=True)
+lottie_book = load_lottieurl("https://assets9.lottiefiles.com/packages/lf20_aKAfIn.json")
 if lottie_book:
-    with st.sidebar:
-        st_lottie(lottie_book, height=200, key='book_animation')
+    st_lottie(lottie_book, height=200, key='book_animation')
 
 nav_options = st.sidebar.radio(
     "Choose an option:",
-    ["View Library", "Add Book", "Search Books", "Library Statistics"]
+    ["View Library", "Add Book", "Search Books", "Library Statistics"],
+    key="nav_radio"
 )
-if nav_options == "🏠 View Library":
+if nav_options == "View Library":
     st.session_state.current_view = "library"
-elif nav_options == "➕ Add Book":
+elif nav_options == "Add Book":
     st.session_state.current_view = "add"
-elif nav_options == "🔍 Search Books":
+elif nav_options == "Search Books":
     st.session_state.current_view = "search"
-elif nav_options == "📊Library Statistics":
+elif nav_options == "Library Statistics":
     st.session_state.current_view = "stats"
 
-st.markdown("<h1 class='main-header'> Personal Library Manager 📖 </h1>", unsafe_allow_html=True)
+st.markdown("<h1 class='main-header'>Personal Library Manager 📖</h1>", unsafe_allow_html=True)
 
+# --- Add Book View ---
 if st.session_state.current_view == "add":
-    st.markdown("<h2 class='sub-header'> Add a new book</h2>", unsafe_allow_html=True)
+    st.markdown("<h2 class='sub-header'>Add a New Book</h2>", unsafe_allow_html=True)
 
-    # Create two columns for input fields
-col1, col2 = st.columns(2)
+    col1, col2 = st.columns(2)
 
-with col1:
-    title = st.text_input("📖 Book Title", max_chars=100)
-    authors = st.text_input("✍️ Author", max_chars=100)
-    publication_year = st.number_input("📅 Publication Year", min_value=1000, max_value=datetime.now().year, step=1, value=2024)
+    with col1:
+        title = st.text_input("📖 Book Title", max_chars=100)
+        author = st.text_input("✍️ Author", max_chars=100)
+        publication_year = st.number_input("📅 Publication Year", min_value=1000, max_value=datetime.now().year, step=1, value=2024)
 
     with col2:
         genre = st.selectbox("Genre", [
-            "Friction", "Non-Friction", "Science", "Technology", "Fantancy", "Romance", "Poetry", "Self-help", "Art", "Religion", "History", "Others"
+            "Fiction", "Non-Fiction", "Science", "Technology", "Fantasy", "Romance", 
+            "Poetry", "Self-help", "Art", "Religion", "History", "Others"
         ])
-        read_status = st.radio("Read Status", ["read", "Unread"], horizontal=True)
-        read_book = read_status == "read"
-        # --- Add Book Form ---
-with st.form("add_book_form"):
-    submit_button = st.form_submit_button(label="Add Book")
+        read_status = st.radio("Read Status", ["Read", "Unread"], horizontal=True)
+        read_book = read_status == "Read"
 
-    if submit_button and title and authors:
-        add_book(title, authors, publication_year, genre, read_book)
-        if st.session_state.book_added:
-            st.markdown("<div class='success-message'> ✅ Book added Successfully!</div>", unsafe_allow_html=True)
-            st.balloons()
-            st.session_state.book_added = False
+    with st.form("add_book_form"):
+        submit_button = st.form_submit_button(label="Add Book")
+
+        if submit_button and title and author:
+            add_book(title, author, publication_year, genre, read_book)
+            if st.session_state.book_added:
+                st.markdown("<div class='success-message'>✅ Book added Successfully!</div>", unsafe_allow_html=True)
+                st.balloons()
+                st.session_state.book_added = False
 
 # --- Library View ---
-if st.session_state.current_view == "library":
-    st.markdown("<h2 class='sub_header'> 📚 Your Library </h2>", unsafe_allow_html=True)
+elif st.session_state.current_view == "library":
+    st.markdown("<h2 class='sub_header'>📚 Your Library</h2>", unsafe_allow_html=True)
 
     if not st.session_state.library:
-        st.markdown("<div class='warning-message'> Your library is empty. Add some books to get started!</div>", unsafe_allow_html=True)
+        st.markdown("<div class='warning-message'>Your library is empty. Add some books to get started!</div>", unsafe_allow_html=True)
     else:
         cols = st.columns(2)
         for i, book in enumerate(st.session_state.library):
@@ -329,7 +329,7 @@ if st.session_state.current_view == "library":
                 st.markdown(f"""<div class='book-card'>
                 <h3>{book['title']}</h3>
                 <p><strong>Author:</strong> {book['author']}</p>
-                <p><strong>Publication Year:</strong> {book['publication_year']}</p>
+                <p><strong>Publication Year:</strong> {book.get('publication_year', 'N/A')}</p>
                 <p><strong>Genre:</strong> {book['genre']}</p>
                 <p><span class='{"read-badge" if book["read_status"] else "unread-badge"}'>{
                     "Read" if book["read_status"] else "Unread"
@@ -342,6 +342,7 @@ if st.session_state.current_view == "library":
                     if st.button("Remove", key=f"remove_{i}", use_container_width=True):
                         if remove_book(i):
                             st.session_state.book_removed = True
+                            st.experimental_rerun()
 
                 with col2:
                     new_status = not book['read_status']
@@ -349,14 +350,15 @@ if st.session_state.current_view == "library":
                     if st.button(status_label, key=f"status_{i}", use_container_width=True):
                         st.session_state.library[i]['read_status'] = new_status
                         save_library()
+                        st.experimental_rerun()
 
     if st.session_state.book_removed:
-        st.markdown("<div class='sucess-message'> Book removed successfully!</div>", unsafe_allow_html=True)
+        st.markdown("<div class='success-message'>Book removed successfully!</div>", unsafe_allow_html=True)
         st.session_state.book_removed = False
 
 # --- Search View ---
 elif st.session_state.current_view == "search":
-    st.markdown("<h2 class='sub-header'> Search Books</h2>", unsafe_allow_html=True)
+    st.markdown("<h2 class='sub-header'>Search Books</h2>", unsafe_allow_html=True)
 
     search_by = st.selectbox("🔍 Search by:", ["Title", "Author", "Genre"])
     search_term = st.text_input("Enter Search Term:")
@@ -366,25 +368,24 @@ elif st.session_state.current_view == "search":
             time.sleep(0.5)
             search_books(search_term, search_by)
 
-        if hasattr(st.session_state, 'search_results'):
-            if st.session_state.search_results:
-                st.markdown(f"<h3>📖 Found {len(st.session_state.search_results)} Result(s):</h3>", unsafe_allow_html=True)
-                for i, book in enumerate(st.session_state.search_results):
-                    st.markdown(f"""<div class='book-card'>
-                    <h3>{book['title']}</h3>
-                    <p><strong>Author:</strong> {book['author']}</p>
-                    <p><strong>Publication Year:</strong> {book['publication_year']}</p>
-                    <p><strong>Genre:</strong> {book['genre']}</p>
-                    <p><span class='{"read-badge" if book["read_status"] else "unread-badge"}'>{
-                        "Read 📘" if book["read_status"] else "Unread 📕"
-                    }</span></p>
-                    </div>
-                    """, unsafe_allow_html=True)
-            elif search_term:
-                st.markdown("<div class='warning-message'>⚠️ No books found matching your search.</div>", unsafe_allow_html=True)
+        if st.session_state.search_results:
+            st.markdown(f"<h3>📖 Found {len(st.session_state.search_results)} Result(s):</h3>", unsafe_allow_html=True)
+            for i, book in enumerate(st.session_state.search_results):
+                st.markdown(f"""<div class='book-card'>
+                <h3>{book['title']}</h3>
+                <p><strong>Author:</strong> {book['author']}</p>
+                <p><strong>Publication Year:</strong> {book.get('publication_year', 'N/A')}</p>
+                <p><strong>Genre:</strong> {book['genre']}</p>
+                <p><span class='{"read-badge" if book["read_status"] else "unread-badge"}'>{
+                    "Read 📘" if book["read_status"] else "Unread 📕"
+                }</span></p>
+                </div>
+                """, unsafe_allow_html=True)
+        elif search_term:
+            st.markdown("<div class='warning-message'>⚠️ No books found matching your search.</div>", unsafe_allow_html=True)
 
-# --- Status View ---
-elif st.session_state.current_view == "status":
+# --- Stats View ---
+elif st.session_state.current_view == "stats":
     st.markdown("<h2 class='sub-header'>📊 Library Statistics</h2>", unsafe_allow_html=True)
 
     if not st.session_state.library:
@@ -397,9 +398,9 @@ elif st.session_state.current_view == "status":
         with col2:
             st.metric("Books Read ✅", stats['read_books'])
         with col3:
-            st.metric("Read Percentage 📈", f"{stats['percentage_read']:.1f}%")
+            st.metric("Read Percentage 📈", f"{stats['percent_read']:.1f}%")
 
-        create_visualizations()
+        create_visualizations(stats)
 
         if stats['authors']:
             st.markdown("<h3>👩‍💻 Top Authors</h3>", unsafe_allow_html=True)
@@ -407,6 +408,5 @@ elif st.session_state.current_view == "status":
             for author, count in top_authors.items():
                 st.markdown(f"**{author}**: {count} book{'s' if count > 1 else ''}")
 
-    st.markdown("---")
-    st.markdown("<div class='footer'>📚 Made with ❤️ by Sumbul Jawed — Personal Library Manager</div>", unsafe_allow_html=True)
-
+st.markdown("---")
+st.markdown("<div class='footer'>📚 Made with ❤️ by Sumbul Jawed — Personal Library Manager</div>", unsafe_allow_html=True)
