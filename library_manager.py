@@ -190,8 +190,10 @@ def get_library_status():
         # Author count
         authors[book['author']] = authors.get(book['author'], 0) + 1
         # Decade count
-        decade = (book['publication_year'] // 10) * 10
-        decades[decade] = decades.get(decade, 0) + 1
+        publication_year = book.get('publication_year', None)
+        if publication_year is not None and isinstance(publication_year, (int, float)):
+            decade = (int(publication_year) // 10) * 10
+            decades[decade] = decades.get(decade, 0) + 1
 
     genres = dict(sorted(genres.items(), key=lambda x: x[1], reverse=True))
     authors = dict(sorted(authors.items(), key=lambda x: x[1], reverse=True))
