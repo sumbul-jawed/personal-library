@@ -23,25 +23,25 @@ st.markdown("""
 <style>
 /* Global styles */
 body {
-    background-color: #F9FAFB;
+    background-color: #F3F4F6;
     color: #1F2937;
     font-family: 'Inter', sans-serif;
 }
 
 /* Main header */
 .main-header {
-    font-size: 2.5rem !important;
-    color: #2563EB;
+    font-size: 3rem !important;
+    color: #1E3A8A;
     font-weight: 700;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     text-align: center;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
 }
 
 /* Subheader */
 .sub_header {
-    font-size: 1.5rem !important;
-    color: #2563EB;
+    font-size: 1.8rem !important;
+    color: #3B82F6;
     font-weight: 600;
     margin-bottom: 1rem;
 }
@@ -50,86 +50,77 @@ body {
 .success-message {
     padding: 1rem;
     background-color: #ECFDF5;
-    border-left: 5px solid #059669;
-    border-radius: 8px;
+    border-left: 5px solid #10B981;
+    border-radius: 0.375rem;
     color: #1F2937;
-    font-weight: 500;
 }
 
 /* Warning message */
 .warning-message {
     padding: 1rem;
-    background-color: #FFFBEB;
-    border-left: 5px solid #D97706;
-    border-radius: 8px;
+    background-color: #FEF3C7;
+    border-left: 5px solid #F59E0B;
+    border-radius: 0.375rem;
     color: #1F2937;
-    font-weight: 500;
 }
 
 /* Book card */
 .book-card {
-    background-color: #FFFFFF;
-    border-radius: 8px;
-    padding: 1.25rem;
+    background-color: #F3F4F6;
+    border-radius: 0.5rem;
+    padding: 1rem;
     margin-bottom: 1rem;
-    border-left: 5px solid #2563EB;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-    transition: transform 0.2s ease;
+    border-left: 5px solid #3B82F6;
+    transition: transform 0.3s ease;
 }
 .book-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
 }
 
 /* Badges */
 .read-badge {
-    background-color: #059669;
+    background-color: #10B981;
     color: #FFFFFF;
-    padding: 0.3rem 0.8rem;
-    border-radius: 12px;
-    font-size: 0.85rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    font-size: 0.875rem;
     font-weight: 600;
 }
 .unread-badge {
-    background-color: #EF4444;
+    background-color: #F87171;
     color: #FFFFFF;
-    padding: 0.3rem 0.8rem;
-    border-radius: 12px;
-    font-size: 0.85rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    font-size: 0.875rem;
     font-weight: 600;
 }
 
 /* Buttons */
 .stButton > button {
-    background-color: #2563EB;
+    border-radius: 0.375rem;
+    background-color: #3B82F6;
     color: #FFFFFF;
-    border-radius: 8px;
     padding: 0.5rem 1rem;
-    font-weight: 500;
-    transition: background-color 0.2s;
 }
 .stButton > button:hover {
-    background-color: #1D4ED8;
+    background-color: #2563EB;
 }
 
 /* Sidebar */
 .sidebar .sidebar-content {
-    background-color: #FFFFFF;
-    border-right: 1px solid #E5E7EB;
+    padding: 1rem;
 }
 .sidebar h1 {
-    color: #2563EB;
+    color: #1E3A8A;
     font-size: 1.5rem;
     font-weight: 700;
     margin-bottom: 1rem;
+    text-align: center;
 }
 .stRadio > label {
     color: #1F2937;
     font-size: 1rem;
-    font-weight: 500;
-}
-.stRadio > div > label > div {
-    border: 2px solid #2563EB;
 }
 
 /* Footer */
@@ -138,38 +129,42 @@ body {
     bottom: 0;
     width: 100%;
     text-align: center;
-    color: #6B7280;
-    padding: 1.5rem 0;
-    font-size: 0.9rem;
-    border-top: 1px solid #E5E7EB;
+    color: #888;
+    padding: 20px 0;
+    font-size: 14px;
 }
 
-/* Responsive design */
+/* Mobile-specific styles for View Library */
 @media (max-width: 640px) {
+    .library-view {
+        background-color: #000000;
+    }
+    .library-view .book-card {
+        background-color: #F3F4F6;
+        border-left: 5px solid #3B82F6;
+        color: #FFFFFF;
+    }
+    .library-view .book-card h3,
+    .library-view .book-card p {
+        color: #FFFFFF;
+    }
+    .library-view .success-message,
+    .library-view .warning-message {
+        color: #1F2937;
+    }
     .main-header {
-        font-size: 2rem !important;
+        font-size: 2.5rem !important;
     }
     .sub_header {
-        font-size: 1.25rem !important;
+        font-size: 1.5rem !important;
     }
     .book-card {
-        padding: 1rem;
+        padding: 0.75rem;
     }
     .stButton > button {
         padding: 0.4rem 0.8rem;
         font-size: 0.9rem;
     }
-    .sidebar .sidebar-content {
-        padding: 1rem;
-    }
-}
-
-/* Plotly charts */
-.plotly-chart {
-    background-color: #FFFFFF;
-    border-radius: 8px;
-    padding: 1rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 </style>
 """, unsafe_allow_html=True)
@@ -296,14 +291,12 @@ def create_visualizations(stats):
             labels=['Read', 'Unread'],
             values=[stats['read_books'], stats['total_books'] - stats['read_books']],
             hole=.4,
-            marker_colors=['#059669', '#EF4444']
+            marker_colors=['#10B981', '#F87171']
         )])
         fig_read_status.update_layout(
             title_text="Read vs Unread Books",
             showlegend=True,
-            height=400,
-            paper_bgcolor='rgba(0,0,0,0)',
-            plot_bgcolor='rgba(0,0,0,0)'
+            height=400
         )
         st.plotly_chart(fig_read_status, use_container_width=True)
 
@@ -323,9 +316,7 @@ def create_visualizations(stats):
             title_text='Books by Genre',
             xaxis_title='Genre',
             yaxis_title='Number of Books',
-            height=400,
-            paper_bgcolor='rgba(0,0,0,0)',
-            plot_bgcolor='rgba(0,0,0,0)'
+            height=400
         )
         st.plotly_chart(fig_genres, use_container_width=True)
 
@@ -339,16 +330,13 @@ def create_visualizations(stats):
             x='Decade',
             y='Count',
             markers=True,
-            line_shape='spline',
-            color_discrete_sequence=['#2563EB']
+            line_shape='spline'
         )
         fig_decades.update_layout(
             title_text='Books by Publication Decade',
             xaxis_title='Decade',
             yaxis_title='Number of Books',
-            height=400,
-            paper_bgcolor='rgba(0,0,0,0)',
-            plot_bgcolor='rgba(0,0,0,0)'
+            height=400
         )
         st.plotly_chart(fig_decades, use_container_width=True)
 
@@ -408,6 +396,7 @@ if st.session_state.current_view == "add":
 
 # --- Library View ---
 elif st.session_state.current_view == "library":
+    st.markdown("<div class='library-view'>", unsafe_allow_html=True)
     st.markdown("<h2 class='sub_header'>📚 Your Library</h2>", unsafe_allow_html=True)
 
     if not st.session_state.library:
@@ -443,6 +432,7 @@ elif st.session_state.current_view == "library":
     if st.session_state.book_removed:
         st.markdown("<div class='success-message'>Book removed successfully!</div>", unsafe_allow_html=True)
         st.session_state.book_removed = False
+    st.markdown("</div>", unsafe_allow_html=True)
 
 # --- Search View ---
 elif st.session_state.current_view == "search":
